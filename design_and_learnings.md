@@ -50,7 +50,7 @@ Streamlit app (`company_kb_viewer.py`).
 ### 1. The embedding step hung for ~12 minutes
 - **Symptom:** the notebook froze on the embed/index cell; it hit the execution timeout (600s).
 - **Root cause:** `langchain-nebius`'s `embed_documents` issued **one request per chunk**, which tripped Nebius rate limits and triggered exponential-backoff retries — **727 seconds** for 30 chunks. (A single embedding call alone was only 2.2s, which is what made it confusing.)
-- **Fix:** a thin wrapper (`nebius_embeddings.py`) that sends **all chunks in one batched request** to the same Nebius OpenAI-compatible endpoint → **~6.5s**. Still a genuine Nebius call (same endpoint, key, and model).
+- **Fix:** an inline batched-embeddings class (`NebiusBatchEmbeddings`, defined in the notebook and the app) that sends **all chunks in one batched request** to the same Nebius OpenAI-compatible endpoint → **~6.5s**. Still a genuine Nebius call (same endpoint, key, and model).
 - **Lesson:** batch your embedding requests; per-item requests against a rate-limited API are silently ~100x slower, and the failure looks like a hang, not an error.
 
 ### 2. A "documented" Nebius model didn't exist

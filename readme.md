@@ -7,13 +7,6 @@ embeds them, indexes them in Pinecone, and answers natural-language questions wi
 **cited sources** — then is stress-tested with 15 questions (including ambiguous,
 multi-document, and unanswerable edge cases).
 
-The file structure mirrors the course reference repo
-[`Mastering-Agentic-AI-Week2 / Week2-Session1`](https://github.com/The-Gen-Academy/Mastering-Agentic-AI-Week2/tree/main/Week2-Session1).
-Two intentional changes from the course: **embeddings run on Nebius Token Factory**
-(`Qwen/Qwen3-Embedding-8B` via `langchain-nebius`) instead of OpenAI — satisfying the
-assignment's "use Nebius for at least one model call" requirement — and **generation
-runs on Claude `claude-opus-4-8`** (via `langchain-anthropic`) instead of the course's
-`gpt-4.1-mini`. The vector store (Pinecone) is unchanged. OpenAI is no longer used.
 
 ## Architecture
 
@@ -43,8 +36,7 @@ keyword matching), then a cross-encoder re-ranker keeps only the most relevant c
 | File | Purpose |
 |------|---------|
 | `hr_knowledge_base.json` | The HR documents — structured `{id, content, metadata}` entries. |
-| `hr_policy_rag.ipynb` | **Main deliverable.** Full pipeline end-to-end + the 15-question stress test, run inline. |
-| `nebius_embeddings.py` | Thin batched embeddings wrapper for the Nebius Token Factory OpenAI-compatible endpoint (one request instead of one-per-chunk — ~100x faster). Imported by the notebook and the app. |
+| `hr_policy_rag.ipynb` | **Main deliverable.** Full pipeline end-to-end + the 15-question stress test, run inline. Defines the batched Nebius embeddings class inline (self-contained). |
 | `evaluation.md` | Qualitative write-up: each test question, retrieved sources, outcome, and *why* retrieval succeeded/failed. |
 | `design_and_learnings.md` | The design journey — decisions, the problems hit (incl. the Q11 retrieval failure), and how each was fixed. |
 | `company_kb_viewer.py` | Streamlit app — KB browser + HR assistant chat (reuses the Pinecone index). |

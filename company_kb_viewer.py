@@ -26,8 +26,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.retrievers import BM25Retriever
 from langchain_classic.retrievers import EnsembleRetriever
 from flashrank import Ranker, RerankRequest
-
-from nebius_embeddings import NebiusBatchEmbeddings
+from langchain_core.embeddings import Embeddings
+from openai import OpenAI
 
 load_dotenv()
 
@@ -35,6 +35,27 @@ INDEX_NAME = os.environ.get("PINECONE_INDEX_NAME", "hr-policies-rag")
 EMBED_MODEL = "Qwen/Qwen3-Embedding-8B"   # Nebius Token Factory embedding model (4096-dim)
 GEN_MODEL = "claude-opus-4-8"
 RERANK_MODEL = "ms-marco-MiniLM-L-12-v2"  # FlashRank cross-encoder re-ranker
+
+
+# --- Nebius Token Factory embeddings (batched) --------------------------------
+# Sends all texts in ONE request to Nebius's OpenAI-compatible endpoint (fast).
+# Kept inline so the app is self-contained (same class as in the notebook).
+class NebiusBatchEmbeddings(Embeddings):
+    def __init__(self, model=EMBED_MODEL, api_key=None,
+                 base_url="https://api.tokenfactory.nebius.com/v1/", batch_size=100):
+        self.model = model
+        self.batch_size = batch_size
+        self.client = OpenAI(base_url=base_url, api_key=api_key or os.environ["NEBIUS_API_KEY"])
+
+    def embed_documents(self, texts):
+        vectors = []
+        for start in range(0, len(texts), self.batch_size):
+            resp = self.client.embeddings.create(model=self.model, input=texts[start:start + self.batch_size])
+            vectors.extend(item.embedding for item in resp.data)
+        return vectors
+
+    def embed_query(self, text):
+        return self.client.embeddings.create(model=self.model, input=[text]).data[0].embedding
 
 SYSTEM = (
     "You are an HR policy assistant for Northwind Labs. Answer the employee's "
