@@ -1,0 +1,30 @@
+[project]
+name = "hr-rag-qa"
+version = "0.1.0"
+description = "RAG-powered Q&A system over enterprise HR policy documents (Week 2 Assignment)"
+readme = "readme.md"
+requires-python = ">=3.12"
+dependencies = [
+    # LangChain ecosystem (mirrors the course Week2-Session1 stack)
+    "langchain-classic>=1.0.7",
+    "langchain-community>=0.4.2",
+    "langchain-core>=1.4.0",
+    "langchain-text-splitters>=1.1.2",
+    # Embeddings — Nebius Token Factory (Qwen3-Embedding-8B) via its OpenAI-compatible
+    # endpoint. We call it with the `openai` SDK (batched, fast) through a thin wrapper
+    # in nebius_embeddings.py; see that file for why we don't use langchain-nebius.
+    "openai>=1.40.0",
+    # Generation LLM — Claude (the one intentional swap from the course's gpt-4.1-mini)
+    "langchain-anthropic>=0.3.0",
+    # Vector store
+    "langchain-pinecone>=0.2.13",
+    "pinecone>=7.3.0",
+    # Hybrid retrieval (BM25 keyword search) + cross-encoder re-ranking (FlashRank).
+    "rank-bm25>=0.2.2",
+    "flashrank>=0.2.9",
+    # App + tooling
+    "streamlit>=1.45.0",
+    "python-dotenv>=1.2.2",
+    "ipykernel>=7.2.0",
+    "notebook>=7.2.0",
+]

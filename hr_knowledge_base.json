@@ -1,0 +1,151 @@
+{
+  "company": "Northwind Labs",
+  "description": "Synthetic HR policy knowledge base for the Week 2 RAG assignment. Entries are grouped into five source documents (Leave & PTO, Code of Conduct, Remote/Hybrid Work, Benefits & Compensation, Onboarding). Some topics are deliberately omitted (relocation, equity/stock options, pet insurance, sabbatical, tuition reimbursement) so the system can be tested on genuinely unanswerable questions.",
+  "documents": [
+    {
+      "id": "leave-01",
+      "metadata": { "doc_type": "policy", "policy_area": "leave", "title": "PTO Accrual", "source_document": "Leave & PTO Policy" },
+      "content": "Full-time employees at Northwind Labs accrue 20 days (160 hours) of paid time off (PTO) per calendar year. PTO accrues monthly at a rate of 1.67 days per completed month of service and is available for use as it accrues. Employees hired mid-year accrue PTO on a prorated basis from their start date. Part-time employees accrue PTO proportionally to their scheduled hours. PTO covers vacation and personal days; sick leave is tracked separately under the Sick Leave policy."
+    },
+    {
+      "id": "leave-02",
+      "metadata": { "doc_type": "policy", "policy_area": "leave", "title": "PTO Carryover", "source_document": "Leave & PTO Policy" },
+      "content": "Employees may carry over a maximum of 5 unused PTO days into the next calendar year. Carried-over days must be used by March 31; any carried-over PTO not used by that date is forfeited. There is no payout for forfeited PTO. Carryover beyond 5 days requires written VP approval and is granted only in exceptional circumstances. Standard accrued PTO for the new year is not affected by carryover."
+    },
+    {
+      "id": "leave-03",
+      "metadata": { "doc_type": "policy", "policy_area": "leave", "title": "Sick Leave", "source_document": "Leave & PTO Policy" },
+      "content": "Northwind Labs provides 10 days of paid sick leave per calendar year, separate from PTO. Sick leave may be used for personal illness, medical appointments, or to care for an immediate family member who is ill. A doctor's note is required for any absence of more than 3 consecutive sick days. Unused sick leave does not carry over and is not paid out on termination. Employees should notify their manager as early as possible on the day of a sick absence."
+    },
+    {
+      "id": "leave-04",
+      "metadata": { "doc_type": "policy", "policy_area": "leave", "title": "Parental Leave", "source_document": "Leave & PTO Policy" },
+      "content": "Northwind Labs offers 16 weeks of fully paid parental leave for the primary caregiver and 6 weeks of fully paid leave for the secondary caregiver following the birth or adoption of a child. To be eligible, an employee must have been employed for at least 12 months before the leave begins. Parental leave must be taken within 12 months of the birth or adoption and can be taken in up to two continuous blocks with manager approval. Health insurance and other benefits continue unchanged during parental leave."
+    },
+    {
+      "id": "leave-05",
+      "metadata": { "doc_type": "policy", "policy_area": "leave", "title": "Bereavement Leave", "source_document": "Leave & PTO Policy" },
+      "content": "Employees are entitled to 5 days of paid bereavement leave following the death of an immediate family member (spouse, partner, child, parent, or sibling) and 2 days for an extended family member. Bereavement leave is separate from PTO and sick leave. Additional unpaid time off may be arranged with the employee's manager and HR if needed."
+    },
+    {
+      "id": "leave-06",
+      "metadata": { "doc_type": "procedure", "policy_area": "leave", "title": "Requesting Time Off", "source_document": "Leave & PTO Policy" },
+      "content": "To request PTO, submit the request through Workday at least 2 weeks in advance for planned absences. Your manager must approve the request before the time off is confirmed. For sick leave, no advance request is needed; log it in Workday on your return. Requests longer than 10 consecutive business days require both manager and department-head approval. During team blackout periods (announced quarterly), non-emergency PTO may be restricted."
+    },
+    {
+      "id": "conduct-01",
+      "metadata": { "doc_type": "policy", "policy_area": "conduct", "title": "Code of Conduct Overview", "source_document": "Code of Conduct" },
+      "content": "The Northwind Labs Code of Conduct sets the standards of behavior expected of all employees, contractors, and officers. Our core values are integrity, respect, accountability, and inclusion. All employees are expected to comply with applicable laws, protect company and customer information, avoid conflicts of interest, and treat colleagues with respect. Violations of the Code may result in disciplinary action up to and including termination."
+    },
+    {
+      "id": "conduct-02",
+      "metadata": { "doc_type": "policy", "policy_area": "conduct", "title": "Dress Code", "source_document": "Code of Conduct" },
+      "content": "Northwind Labs maintains a business-casual dress code in the office. Employees should dress neatly and appropriately for their role; client-facing meetings may call for business attire. There is no specific dress code for remote work, but employees should dress appropriately for video meetings. Casual dress is permitted on Fridays and during designated company events."
+    },
+    {
+      "id": "conduct-03",
+      "metadata": { "doc_type": "policy", "policy_area": "conduct", "title": "Anti-Harassment and Reporting", "source_document": "Code of Conduct" },
+      "content": "Northwind Labs has zero tolerance for harassment, discrimination, or retaliation of any kind, including on the basis of race, gender, age, religion, disability, or sexual orientation. Employees who experience or witness harassment should report it to their manager, to HR, or anonymously through the ethics hotline at 1-800-555-0142. All reports are investigated promptly and confidentially. Retaliation against anyone who reports a concern in good faith is itself a serious violation of this policy."
+    },
+    {
+      "id": "conduct-04",
+      "metadata": { "doc_type": "policy", "policy_area": "conduct", "title": "Conflicts of Interest and Gifts", "source_document": "Code of Conduct" },
+      "content": "Employees must avoid situations where personal interests conflict with those of Northwind Labs. Any outside employment, board membership, or financial interest in a competitor, supplier, or customer must be disclosed to HR in writing. Employees may not accept gifts, entertainment, or favors from business partners valued at more than $50 without manager approval. Cash or cash-equivalent gifts may never be accepted regardless of value."
+    },
+    {
+      "id": "conduct-05",
+      "metadata": { "doc_type": "policy", "policy_area": "conduct", "title": "Confidentiality and Data Protection", "source_document": "Code of Conduct" },
+      "content": "All employees sign a non-disclosure agreement and must protect Northwind Labs confidential information and customer data. Confidential information must not be shared outside the company or used for personal benefit. Customer data may only be accessed on a need-to-know basis for legitimate business purposes. Suspected data breaches must be reported to the security team immediately at security@northwindlabs.example."
+    },
+    {
+      "id": "remote-01",
+      "metadata": { "doc_type": "policy", "policy_area": "remote-work", "title": "Remote Work Eligibility", "source_document": "Remote & Hybrid Work Policy" },
+      "content": "Remote work eligibility at Northwind Labs depends on the role and is subject to manager approval. Employees become eligible to request a remote or hybrid arrangement after completing their first 90 days of employment. Some roles that require on-site equipment or in-person collaboration are designated office-only and are not eligible for remote work. Approved remote arrangements are reviewed annually and may be adjusted based on business needs or performance."
+    },
+    {
+      "id": "remote-02",
+      "metadata": { "doc_type": "policy", "policy_area": "remote-work", "title": "Home Office Equipment Stipend", "source_document": "Remote & Hybrid Work Policy" },
+      "content": "Approved remote and hybrid employees receive a one-time home office setup stipend of $1,000 to purchase a desk, chair, monitor, or other ergonomic equipment. In addition, remote employees receive a $50 per month internet reimbursement. Receipts must be submitted through Expensify within 60 days of purchase. Equipment purchased with the stipend remains the property of the employee, but company laptops and security devices remain Northwind Labs property and must be returned on separation."
+    },
+    {
+      "id": "remote-03",
+      "metadata": { "doc_type": "policy", "policy_area": "remote-work", "title": "Core Hours and Availability", "source_document": "Remote & Hybrid Work Policy" },
+      "content": "Remote and hybrid employees are expected to be available during core collaboration hours of 10:00 AM to 3:00 PM in their local time zone. Outside of core hours, employees may flex their schedule as long as work is completed and commitments are met. Employees should keep their calendar up to date and be reachable on Slack during core hours. Any planned unavailability during core hours should be communicated to the team in advance."
+    },
+    {
+      "id": "remote-04",
+      "metadata": { "doc_type": "policy", "policy_area": "remote-work", "title": "Hybrid Schedule", "source_document": "Remote & Hybrid Work Policy" },
+      "content": "Employees in hybrid roles are expected to work from a Northwind Labs office at least 3 days per week, with the specific days agreed with their manager. Fully remote arrangements are available only for roles explicitly designated as remote-eligible. Teams may designate one shared in-office 'anchor day' per week to support in-person collaboration. Desk space at offices is reserved through the facilities booking system."
+    },
+    {
+      "id": "remote-05",
+      "metadata": { "doc_type": "policy", "policy_area": "remote-work", "title": "Remote Work Security", "source_document": "Remote & Hybrid Work Policy" },
+      "content": "Remote employees must connect to company systems using the Northwind Labs VPN and may only access company data from a company-issued device. Public Wi-Fi may be used only with the VPN active. Company devices must have full-disk encryption and automatic screen lock enabled, both of which are configured by IT. Personal devices may not be used to store or process company or customer data."
+    },
+    {
+      "id": "benefits-01",
+      "metadata": { "doc_type": "benefits-guide", "policy_area": "benefits", "title": "Health Insurance", "source_document": "Benefits & Compensation" },
+      "content": "Northwind Labs offers PPO and HMO medical plans through our insurance carrier. The company pays 80% of the employee premium and 60% of premiums for dependents. New employees must enroll within 30 days of their start date; otherwise they must wait for the annual open enrollment period in November. Coverage begins on the first day of the month following enrollment. Plan details and premium costs are available in the benefits portal."
+    },
+    {
+      "id": "benefits-02",
+      "metadata": { "doc_type": "benefits-guide", "policy_area": "benefits", "title": "Dental and Vision", "source_document": "Benefits & Compensation" },
+      "content": "Dental and vision coverage are offered as optional add-on plans. Dental covers preventive care at 100% and major procedures at 50% after the deductible. Vision covers an annual eye exam and an allowance toward glasses or contact lenses every 12 months. Dental and vision enrollment follows the same 30-day new-hire window and November open enrollment as medical coverage."
+    },
+    {
+      "id": "benefits-03",
+      "metadata": { "doc_type": "benefits-guide", "policy_area": "benefits", "title": "401(k) Retirement Plan", "source_document": "Benefits & Compensation" },
+      "content": "Northwind Labs offers a 401(k) retirement plan with a company match of 100% of employee contributions up to 4% of eligible salary. The company match is immediately vested. Employees may begin contributing on their first day and can change their contribution rate at any time through the retirement provider's portal. The plan offers a range of investment funds, including target-date funds."
+    },
+    {
+      "id": "benefits-04",
+      "metadata": { "doc_type": "benefits-guide", "policy_area": "benefits", "title": "Life and Disability Insurance", "source_document": "Benefits & Compensation" },
+      "content": "Northwind Labs provides company-paid basic life insurance equal to 1x the employee's annual salary, along with short-term and long-term disability coverage. Short-term disability replaces 60% of salary for up to 12 weeks; long-term disability begins thereafter. Employees may purchase additional voluntary life insurance for themselves and dependents at group rates during enrollment."
+    },
+    {
+      "id": "benefits-05",
+      "metadata": { "doc_type": "benefits-guide", "policy_area": "benefits", "title": "Wellness Reimbursement", "source_document": "Benefits & Compensation" },
+      "content": "Employees are eligible for a wellness reimbursement of up to $500 per calendar year toward gym memberships, fitness classes, mental health apps, or wellness equipment. Submit receipts through Expensify with the 'Wellness' category. The wellness benefit is separate from the home office equipment stipend and does not roll over year to year."
+    },
+    {
+      "id": "benefits-06",
+      "metadata": { "doc_type": "benefits-guide", "policy_area": "payroll", "title": "Pay Cycle and Direct Deposit", "source_document": "Benefits & Compensation" },
+      "content": "Northwind Labs pays employees bi-weekly, resulting in 26 pay periods per year. Pay is issued by direct deposit on alternate Fridays; if a payday falls on a holiday, deposits are made the prior business day. Employees set up and update direct deposit details in Workday. Pay stubs are available in Workday under the Pay section."
+    },
+    {
+      "id": "benefits-07",
+      "metadata": { "doc_type": "procedure", "policy_area": "payroll", "title": "Expense Reimbursement", "source_document": "Benefits & Compensation" },
+      "content": "Business expenses such as approved travel, client meals, and software subscriptions are reimbursed through Expensify. Submit expense reports with itemized receipts within 30 days of incurring the expense. Reports are approved by your manager and reimbursed in the next bi-weekly pay cycle after approval. Expenses over $1,000 require pre-approval. Travel must follow the corporate travel guidelines for booking and per-diem limits."
+    },
+    {
+      "id": "onboard-01",
+      "metadata": { "doc_type": "onboarding", "policy_area": "onboarding", "title": "First-Week Checklist", "source_document": "Onboarding Guide" },
+      "content": "In your first week at Northwind Labs you should: complete new-hire paperwork in Workday, attend the Monday orientation session, set up your accounts and equipment with IT, meet your assigned onboarding buddy, and have a 1:1 with your manager to review your 30-day goals. New hires should also enroll in benefits within their first 30 days and complete required compliance training within the first two weeks."
+    },
+    {
+      "id": "onboard-02",
+      "metadata": { "doc_type": "onboarding", "policy_area": "onboarding", "title": "IT Setup and Accounts", "source_document": "Onboarding Guide" },
+      "content": "On your first day, IT will provision your company email, Slack, Workday, and single sign-on accounts, and issue your laptop and building access badge. Remote new hires receive their laptop by courier before the start date and complete device setup over a video call with IT. All employees must enable multi-factor authentication and, for remote staff, install and test the VPN before accessing company systems. IT support is available through the Help Desk in Slack."
+    },
+    {
+      "id": "onboard-03",
+      "metadata": { "doc_type": "onboarding", "policy_area": "onboarding", "title": "Onboarding Buddy Program", "source_document": "Onboarding Guide" },
+      "content": "Every new hire is paired with an onboarding buddy from their team who helps them navigate their first 90 days. The buddy schedules informal check-ins at week 1, day 30, and day 90, answers day-to-day questions, and introduces the new hire to key colleagues. The buddy program is separate from the formal manager relationship and is intended to provide a friendly peer point of contact."
+    },
+    {
+      "id": "onboard-04",
+      "metadata": { "doc_type": "onboarding", "policy_area": "onboarding", "title": "Required Compliance Training", "source_document": "Onboarding Guide" },
+      "content": "All new employees must complete required compliance training within their first two weeks, including modules on the Code of Conduct, anti-harassment, data protection and security awareness, and workplace safety. Training is assigned automatically in the learning portal on your start date. Managers are notified if training is not completed on time. Annual refresher training is required for all employees thereafter."
+    },
+    {
+      "id": "faq-01",
+      "metadata": { "doc_type": "faq", "policy_area": "benefits", "title": "FAQ: When do benefits start?", "source_document": "Benefits & Compensation" },
+      "content": "Q: When does my health coverage take effect? A: You must enroll within 30 days of your start date. Coverage begins on the first day of the month following your enrollment. If you miss the 30-day window, you must wait until the November open enrollment period unless you have a qualifying life event such as marriage or the birth of a child."
+    },
+    {
+      "id": "faq-02",
+      "metadata": { "doc_type": "faq", "policy_area": "remote-work", "title": "FAQ: Can I work fully remote?", "source_document": "Remote & Hybrid Work Policy" },
+      "content": "Q: Can I work from home full time? A: It depends on your role. Fully remote arrangements are available only for roles designated as remote-eligible, and you become eligible to request remote or hybrid work after your first 90 days, subject to manager approval. Many roles are hybrid, requiring at least 3 days per week in the office. Check with your manager about your specific role's designation."
+    }
+  ]
+}

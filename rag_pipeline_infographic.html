@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Policies RAG — How It Works</title>
+<style>
+  :root{
+    --ink:#1f2430; --muted:#5b6577; --line:#e3e7ee; --bg:#f6f8fb; --card:#ffffff;
+    --nebius:#2f6df6; --pinecone:#7c3aed; --claude:#d97706; --leave:#0ea5a4;
+    --ok:#16a34a; --warn:#d97706; --fail:#dc2626; --shadow:0 6px 20px rgba(31,36,48,.07);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;line-height:1.5}
+  .wrap{max-width:920px;margin:0 auto;padding:32px 22px 64px}
+  header.hero{background:linear-gradient(135deg,#1f2430,#2b3650);color:#fff;border-radius:18px;
+    padding:34px 32px;box-shadow:var(--shadow)}
+  header.hero h1{margin:0 0 6px;font-size:30px;letter-spacing:-.3px}
+  header.hero p{margin:0;color:#c7d0e0;font-size:15px}
+  .stack-badges{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;
+    padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff}
+  .badge .dot{width:9px;height:9px;border-radius:50%}
+  .phase-tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);margin:34px 0 4px}
+  .phase-tag span{color:var(--ink)}
+  .phase-sub{color:var(--muted);font-size:13.5px;margin:0 0 14px}
+  .step{display:flex;gap:16px;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:18px 20px;box-shadow:var(--shadow);position:relative}
+  .num{flex:0 0 auto;width:42px;height:42px;border-radius:11px;display:grid;place-items:center;
+    font-weight:800;font-size:18px;color:#fff;background:var(--ink)}
+  .step h3{margin:2px 0 4px;font-size:17px}
+  .step p{margin:0;color:var(--muted);font-size:14px}
+  .step .meta{margin-top:9px;display:flex;gap:8px;flex-wrap:wrap}
+  .chip{font-size:12px;font-weight:600;padding:4px 9px;border-radius:7px;background:#eef2f8;color:#39435a}
+  .chip.tech{color:#fff}
+  .arrow{height:22px;display:grid;place-items:center;color:#aab3c4;font-size:18px}
+  .icon{font-size:22px;margin-right:2px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .mini{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+  .mini h4{margin:0 0 6px;font-size:14px}
+  .mini p{margin:0;color:var(--muted);font-size:13px}
+  .buckets{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+  .bucket{border-radius:12px;padding:14px 16px;color:#fff}
+  .bucket h4{margin:0 0 4px;font-size:14.5px;display:flex;justify-content:space-between}
+  .bucket p{margin:0;font-size:12.5px;opacity:.92}
+  .bucket .ex{margin-top:7px;font-size:12px;background:rgba(255,255,255,.16);padding:6px 9px;border-radius:7px}
+  .legend{margin-top:10px;color:var(--muted);font-size:12.5px}
+  .callout{margin-top:16px;border-left:4px solid var(--claude);background:#fff8ee;
+    border-radius:10px;padding:14px 16px;font-size:13.5px;color:#7a4d09}
+  footer{margin-top:34px;color:var(--muted);font-size:12px;text-align:center}
+  @media(max-width:680px){.grid2,.buckets{grid-template-columns:1fr}}
+  @media print{body{background:#fff}.step,.mini,.hero{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <h1>HR Policies RAG — How It Works</h1>
+    <p>A Retrieval-Augmented Generation system that answers employee HR questions from official policy
+       documents — using <strong>hybrid retrieval with cross-encoder re-ranking</strong>, with cited sources
+       and a graceful “not covered” reply when the answer isn’t there.</p>
+    <div class="stack-badges">
+      <span class="badge"><span class="dot" style="background:#5fa8ff"></span>Embeddings · Nebius Token Factory</span>
+      <span class="badge"><span class="dot" style="background:#b78cff"></span>Vector store · Pinecone</span>
+      <span class="badge"><span class="dot" style="background:#9fe6a0"></span>Retrieval · BM25 + dense + FlashRank re-rank</span>
+      <span class="badge"><span class="dot" style="background:#ffcb73"></span>Generation · Claude Opus 4.8</span>
+      <span class="badge"><span class="dot" style="background:#7fe3c0"></span>Orchestration · LangChain</span>
+    </div>
+  </header>
+
+  <!-- PHASE A -->
+  <div class="phase-tag">Phase A · <span>Indexing</span> &nbsp;—&nbsp; build the knowledge base (run once)</div>
+  <p class="phase-sub">Turn raw HR documents into searchable vectors stored in Pinecone.</p>
+
+  <div class="step">
+    <div class="num" style="background:var(--leave)">1</div>
+    <div>
+      <h3><span class="icon">📄</span>Source documents</h3>
+      <p>28 structured HR entries grouped into 5 policy documents. A few topics are <em>deliberately omitted</em>
+         (relocation, pet insurance, sabbatical) so the system can be tested on unanswerable questions.</p>
+      <div class="meta">
+        <span class="chip">hr_knowledge_base.json</span>
+        <span class="chip">Leave &amp; PTO</span><span class="chip">Code of Conduct</span>
+        <span class="chip">Remote Work</span><span class="chip">Benefits</span><span class="chip">Onboarding</span>
+      </div>
+    </div>
+  </div>
+  <div class="arrow">▼</div>
+
+  <div class="step">
+    <div class="num">2</div>
+    <div>
+      <h3><span class="icon">📥</span>Load</h3>
+      <p>Each entry becomes a LangChain <strong>Document</strong> carrying its text plus metadata
+         (title, policy area, source document) — so answers can cite where they came from.</p>
+      <div class="meta"><span class="chip">LangChain Document</span><span class="chip">content + metadata</span></div>
+    </div>
+  </div>
+  <div class="arrow">▼</div>
+
+  <div class="step">
+    <div class="num">3</div>
+    <div>
+      <h3><span class="icon">✂️</span>Chunk</h3>
+      <p>Documents are split into smaller overlapping passages so retrieval can pinpoint the exact relevant
+         snippet instead of a whole document.</p>
+      <div class="meta">
+        <span class="chip">RecursiveCharacterTextSplitter</span>
+        <span class="chip">500 chars</span><span class="chip">100 overlap</span><span class="chip">≈ 30 chunks</span>
+      </div>
+    </div>
+  </div>
+  <div class="arrow">▼</div>
+
+  <div class="step">
+    <div class="num" style="background:var(--nebius)">4</div>
+    <div>
+      <h3><span class="icon">🧮</span>Embed <span style="font-size:12px;color:var(--nebius);font-weight:700">· NEBIUS CALL</span></h3>
+      <p>Each chunk is converted into a numeric vector that captures its <em>meaning</em>. Similar meanings land
+         close together in vector space — this is what makes semantic search work.</p>
+      <div class="meta">
+        <span class="chip tech" style="background:var(--nebius)">Nebius · Qwen3-Embedding-8B</span>
+        <span class="chip">4096 dimensions</span>
+      </div>
+    </div>
+  </div>
+  <div class="arrow">▼</div>
+
+  <div class="step">
+    <div class="num" style="background:var(--pinecone)">5</div>
+    <div>
+      <h3><span class="icon">🗂️</span>Index</h3>
+      <p>The vectors (with their metadata) are stored in a Pinecone serverless index using cosine similarity.
+         This is the searchable “knowledge base” the assistant queries against.</p>
+      <div class="meta">
+        <span class="chip tech" style="background:var(--pinecone)">Pinecone serverless</span>
+        <span class="chip">cosine · 4096-dim</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE B -->
+  <div class="phase-tag">Phase B · <span>Query</span> &nbsp;—&nbsp; answer a question (runs every time)</div>
+  <p class="phase-sub">Retrieve the most relevant chunks, then let Claude answer using only those.</p>
+
+  <div class="step">
+    <div class="num" style="background:#39435a">6</div>
+    <div>
+      <h3><span class="icon">❓</span>Question → hybrid retrieve → re-rank</h3>
+      <p>The question is matched two ways at once — <strong>keyword (BM25)</strong> and <strong>semantic
+         (Nebius embeddings + Pinecone)</strong> — fused into one candidate pool, then a
+         <strong>cross-encoder re-ranker (FlashRank)</strong> keeps the most relevant <strong>top 4</strong> chunks.
+         Casting a wide net then re-ranking is more precise than either search alone.</p>
+      <div class="meta">
+        <span class="chip">BM25 keyword</span>
+        <span class="chip tech" style="background:var(--nebius)">dense · Nebius</span>
+        <span class="chip tech" style="background:var(--pinecone)">Pinecone</span>
+        <span class="chip">cross-encoder re-rank → top 4</span>
+      </div>
+    </div>
+  </div>
+  <div class="arrow">▼</div>
+
+  <div class="step">
+    <div class="num" style="background:var(--claude)">7</div>
+    <div>
+      <h3><span class="icon">🤖</span>Generate <span style="font-size:12px;color:var(--claude);font-weight:700">· CLAUDE</span></h3>
+      <p>The retrieved chunks become the context for Claude. A strict prompt tells it to answer
+         <strong>only from that context</strong>, cite the policies it used, and reply
+         “not covered in the HR knowledge base” when the answer isn’t there.</p>
+      <div class="meta">
+        <span class="chip tech" style="background:var(--claude)">Claude · claude-opus-4-8</span>
+        <span class="chip">answer-from-context-only</span>
+      </div>
+    </div>
+  </div>
+  <div class="arrow">▼</div>
+
+  <div class="step">
+    <div class="num" style="background:var(--ok)">8</div>
+    <div>
+      <h3><span class="icon">✅</span>Answer + sources</h3>
+      <p>The user gets a concise answer with the source policy titles — or a safe decline. Because Claude is
+         constrained to the context, it <strong>doesn’t invent</strong> policies that don’t exist.</p>
+      <div class="meta"><span class="chip">grounded answer</span><span class="chip">cited sources</span><span class="chip">no hallucinated policy</span></div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Why “answer-from-context-only” matters:</strong> a chatbot that confidently makes up an HR policy is
+    worse than useless. The guardrail turns “I don’t have that” into a feature — the system declines instead of guessing.
+  </div>
+
+  <!-- STRESS TEST -->
+  <div class="phase-tag">Then · <span>Stress test</span> &nbsp;—&nbsp; 15 questions, 4 difficulty types</div>
+  <p class="phase-sub">Each question type probes a different strength or weakness of retrieval.</p>
+
+  <div class="buckets">
+    <div class="bucket" style="background:linear-gradient(135deg,#16a34a,#0f8a3f)">
+      <h4>Direct factual <span>× 6</span></h4>
+      <p>One clear answer in one document. Retrieval should nail it.</p>
+      <div class="ex">“What is the 401(k) match?”</div>
+    </div>
+    <div class="bucket" style="background:linear-gradient(135deg,#d97706,#b45309)">
+      <h4>Ambiguous <span>× 3</span></h4>
+      <p>Underspecified wording — retrieval reflects the ambiguity instead of resolving it.</p>
+      <div class="ex">“What’s the deadline?”</div>
+    </div>
+    <div class="bucket" style="background:linear-gradient(135deg,#7c3aed,#5b21b6)">
+      <h4>Multi-document <span>× 3</span></h4>
+      <p>Answer needs chunks from two source docs — tests cross-document recall.</p>
+      <div class="ex">“New remote hire: setup + remote rules?”</div>
+    </div>
+    <div class="bucket" style="background:linear-gradient(135deg,#dc2626,#991b1b)">
+      <h4>Unanswerable <span>× 3</span></h4>
+      <p>Topic isn’t in the KB. Success = a clean decline, <em>not</em> a fabricated policy.</p>
+      <div class="ex">“What is the relocation policy?”</div>
+    </div>
+  </div>
+  <p class="legend">✅ Succeeds on specific factual &amp; unanswerable questions &nbsp;·&nbsp;
+     ⚠️ Struggles with ambiguous &amp; multi-document queries (the documented failure modes).</p>
+
+  <!-- FINDINGS -->
+  <div class="phase-tag">Findings &amp; <span>next steps</span></div>
+  <div class="grid2">
+    <div class="mini">
+      <h4>✅ Where it succeeds</h4>
+      <p>Specific factual lookups return correct, cited answers. Unanswerable questions are declined rather than
+         hallucinated — the most important safety behavior.</p>
+    </div>
+    <div class="mini">
+      <h4>⚠️ Where it fails</h4>
+      <p>Ambiguous queries have no subject to anchor on; multi-document answers under-retrieve the second
+         document because top-k by similarity favors one cluster.</p>
+    </div>
+    <div class="mini">
+      <h4>✅ Implemented — Hybrid + re-rank</h4>
+      <p>BM25 keyword + dense vector fused, then cross-encoder re-ranked — this is what pulls exact-term chunks
+         (like “401(k)”) into the final context that pure vector search missed.</p>
+    </div>
+    <div class="mini">
+      <h4>🔧 Next — Metadata filtering &amp; query decomposition</h4>
+      <p>Filter by policy area for ambiguous queries; split multi-part questions into sub-queries so each aspect
+         retrieves its own best chunk.</p>
+    </div>
+  </div>
+
+  <footer>
+    Northwind Labs HR Assistant · Week 2 RAG Assignment · LangChain · Nebius Token Factory · Pinecone · BM25 + FlashRank hybrid re-ranking · Claude Opus 4.8
+  </footer>
+
+</div>
+</body>
+</html>
